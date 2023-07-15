@@ -33,9 +33,28 @@ Clone the PlantSpeak repository to your local machine.
 git clone https://github.com/SamKry/PlantSpeak.git
 ```
 
-### 4. Adjust the `secrets.h` File in the `src` Directory
+### 4. The secrets
 
-Modify the `secrets.h` file in the repository to include your network and ThingSpeak credentials. This file should not be committed to version control, as it contains sensitive information.
+#### 4.1 Create a `secrets.h` File
+
+Create a file in the `src` directory with the file name `secrets.h`.
+
+#### 4.2 Add credentials
+
+Add this content to the `secrets.h` file:
+
+```c++
+// Use this file to store all of the private credentials 
+// and connection details. Pay attention to not commit this file!
+
+#define SECRET_SSID "Plant_Net_24"		    // replace MySSID with your WiFi network name
+#define SECRET_PASS "onlyPlantsCanConnect24"	    // replace MyPassword with your WiFi password
+
+#define SECRET_CH_ID 1270350L 		    // replace 0000000 with your channel number
+#define SECRET_WRITE_API_KEY "IZ57RVWJ50DAH9KM" // replace MyAPIKey with your channel write API key
+```
+
+Modify the `secrets.h` file to include your network and ThingSpeak credentials. This file should not be committed to version control, as it contains sensitive information.
 
 ### 5. Hardware Setup
 
