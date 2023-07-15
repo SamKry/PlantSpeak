@@ -17,6 +17,8 @@ To install and set up PlantSpeak, please follow these steps:
 
 If you haven't already, create an account on [ThingSpeak](https://thingspeak.com) to host your sensor data.
 
+This is my channel: [Thingspeak channel 1270350](https://thingspeak.com/channels/1270350)
+
 ### 2. Create a New Channel on ThingSpeak
 
 Create a new channel on ThingSpeak with at least five fields. The default fields for PlantSpeak are as follows:
