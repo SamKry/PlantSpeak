@@ -72,6 +72,10 @@ Solder the resistor to the ESP-32 board according to the provided diagram. The r
 ![Solar Panel Installation](resources/imgs/SolarPanel.png)
 
 If you want to power the system with a solar panel, solder the solar panel to the ESP-32 board following the provided diagram. A small battersie is sufficient to survive a day, but I recommend using a slightly larger LiPo, as it is not sunny every day in my region.
+Two 5V 250mA solar panels are sufficient to power the system.
+I use the following solar panels:
+- [5V 1.2W 240mA DIY Polycrystalline Silicon Solar Panel Battery Solar Charger](https://www.aliexpress.com/item/1005005374229859.html?spm=a2g0o.order_list.order_list_main.135.28ce1802KfpHDL)
+- [Solar Panel 5V Mini Solar System DIY For Battery Cell Phone Chargers Portable 0.7W 0.8W 1W 1.2W 2.5W 4.2W Solar Cell](https://www.aliexpress.com/item/32877113554.html?spm=a2g0o.order_list.order_list_main.131.28ce1802KfpHDL)
 
 ### 6. Upload Code to the ESP-32
 
