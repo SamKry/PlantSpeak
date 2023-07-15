@@ -63,7 +63,7 @@ Follow the steps below to set up the hardware components for PlantSpeak.
 
 #### 5.1 Solder the Voltage Sensor
 
-![Voltage Sensor Installation](resources/imgs/voltagesensor.png)
+![Voltage Sensor Installation](resources/imgs/VoltageSensor.png)
 
 Solder the resistor to the ESP-32 board according to the provided diagram. The resistor is used to measure the voltage of the battery. If you don't want to measure the voltage, you can skip this step. However, you have to remove the corresponding code from the `main.cpp` file.
 
