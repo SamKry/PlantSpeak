@@ -65,7 +65,9 @@ Follow the steps below to set up the hardware components for PlantSpeak.
 
 ![Voltage Sensor Installation](resources/imgs/VoltageSensor.png)
 
-Solder the resistor to the ESP-32 board according to the provided diagram. The resistor is used to measure the voltage of the battery. If you don't want to measure the voltage, you can skip this step. However, you have to remove the corresponding code from the `main.cpp` file.
+Solder the two **100K Ohm** resistors to the ESP-32 board according to the provided diagram. The resistors are used to measure the voltage of the battery. Use `GPIO 35` for the voltage measurement.
+
+If you don't want to measure the voltage, you can skip this step. However, you have to remove the corresponding code from the `main.cpp` file.
 
 #### 5.2 (Optional) Add Solar Panel
 
@@ -76,6 +78,8 @@ Two 5V 250mA solar panels are sufficient to power the system.
 I use the following solar panels:
 - [5V 1.2W 240mA DIY Polycrystalline Silicon Solar Panel Battery Solar Charger](https://www.aliexpress.com/item/1005005374229859.html?spm=a2g0o.order_list.order_list_main.135.28ce1802KfpHDL)
 - [Solar Panel 5V Mini Solar System DIY For Battery Cell Phone Chargers Portable 0.7W 0.8W 1W 1.2W 2.5W 4.2W Solar Cell](https://www.aliexpress.com/item/32877113554.html?spm=a2g0o.order_list.order_list_main.131.28ce1802KfpHDL)
+
+The battery can also be charged via the micro USB port.
 
 ### 6. Upload Code to the ESP-32
 
