@@ -2,6 +2,8 @@
 
 PlantSpeak is an IoT project that publishes sensor data from an "ESP-32 Soil Moisture Sensor Module" to ThingSpeak. It collects data related to soil humidity, air temperature, air humidity, voltage, and RSSI, and sends it to ThingSpeak for further analysis and visualization.
 
+The default upload period is one minute and if an error accoured, the esp32 will sleep for 5 minutes and then retry to upload (with new sensor data).
+
 This project was inspired by:
 
 - [DIY MORE ESP32 DHT11 Soil Sensor](https://templates.blakadder.com/diymore_012592.html)
@@ -19,6 +21,8 @@ If you haven't already, create an account on [ThingSpeak](https://thingspeak.com
 
 Create a new channel on ThingSpeak with at least five fields. The default fields for PlantSpeak are as follows:
 ![image](https://github.com/SamKry/PlantSpeak/assets/87971518/e2e2e32e-acbb-4b24-87ee-3afccbcca991)
+
+Also activate **Show Status**.
 
 ### 3. Clone the Repository
 
