@@ -22,7 +22,7 @@ This is my channel: [Thingspeak channel 1270350](https://thingspeak.com/channels
 ### 2. Create a New Channel on ThingSpeak
 
 Create a new channel on ThingSpeak with at least five fields. The default fields for PlantSpeak are as follows:
-![image](https://github.com/SamKry/PlantSpeak/assets/87971518/e2e2e32e-acbb-4b24-87ee-3afccbcca991)
+![channelSetup](resources/imgs/channelSetup.png)
 
 Also activate **Show Status**.
 
@@ -63,15 +63,13 @@ Follow the steps below to set up the hardware components for PlantSpeak.
 
 #### 5.1 Solder the Voltage Sensor
 
-![Voltage Sensor Installation](resources/imgs/voltage-sensor.png)
+![Voltage Sensor Installation](resources/imgs/voltagesensor.png)
 
-Solder the resistor to the ESP-32 board according to the provided diagram.
-
-![Resistor Installation](https://link.to.your/resistor/image)
+Solder the resistor to the ESP-32 board according to the provided diagram. The resistor is used to measure the voltage of the battery. If you don't want to measure the voltage, you can skip this step. However, you have to remove the corresponding code from the `main.cpp` file.
 
 #### 5.2 (Optional) Add Solar Panel
 
-![Solar Panel Installation](https://link.to.your/solar/panel/image)
+![Solar Panel Installation](resources/imgs/SolarPanel.png)
 
 If you want to power the system with a solar panel, solder the solar panel to the ESP-32 board following the provided diagram. A small battersie is sufficient to survive a day, but I recommend using a slightly larger LiPo, as it is not sunny every day in my region.
 
