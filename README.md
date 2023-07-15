@@ -18,12 +18,7 @@ If you haven't already, create an account on [ThingSpeak](https://thingspeak.com
 ### 2. Create a New Channel on ThingSpeak
 
 Create a new channel on ThingSpeak with at least five fields. The default fields for PlantSpeak are as follows:
-
-1. Soil Humidity
-2. Air Temperature
-3. Air Humidity
-4. Voltage
-5. RSSI
+![image](https://github.com/SamKry/PlantSpeak/assets/87971518/e2e2e32e-acbb-4b24-87ee-3afccbcca991)
 
 ### 3. Clone the Repository
 
