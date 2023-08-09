@@ -59,7 +59,7 @@ bool sendDataToThingSpeak(int maxRetries) {
  */
 void setDEEP_SLEEP_TIME(float _voltage) {
   double e = 2.71828;
-  DEEP_SLEEP_TIME = (pow((1.0 / (1.0 + pow(e, -(4.7 * (_voltage - 2.7))))), 25.6) * (-19) + 20) * 60;
+  DEEP_SLEEP_TIME = (pow((1.0 / (1.0 + pow(e, -(4.7 * (_voltage - 3.3))))), 25.6) * (-19) + 20) * 60;
 }
 
 void setup() {
@@ -75,12 +75,6 @@ void setup() {
   led.turnOff();
   wifiConnectionTime = wifiHandler.connect(SECRET_SSID, SECRET_PASS, NUMBER_OF_READINGS * 2) / 1000.0;
   led.turnOn();
-
-  Serial.println("V,Sleep time");
-  for (double i = 2; i < 5; i += 0.1) {
-    setDEEP_SLEEP_TIME(i);
-    Serial.println(String(i) + "," + String(DEEP_SLEEP_TIME));
-  }
 }
 
 void loop() {
@@ -97,6 +91,7 @@ void loop() {
   led.turnOff();
 
   setDEEP_SLEEP_TIME(voltage.read(NUMBER_OF_READINGS));
+  Serial.println("Going to sleep for " + String(DEEP_SLEEP_TIME) + " seconds");
   gpio_deep_sleep_hold_en();
   esp_sleep_enable_timer_wakeup(DEEP_SLEEP_TIME * 1000000);
   esp_deep_sleep_start();
