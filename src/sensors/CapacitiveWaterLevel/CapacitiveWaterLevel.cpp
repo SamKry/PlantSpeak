@@ -31,7 +31,8 @@ void CapacitiveWaterLevel::begin()
  */
 int CapacitiveWaterLevel::read()
 {
-    return map(readRaw(1, _delayTime), AirValue, WaterValue, 0, 100);
+    _waterLevel = map(readRaw(1, _delayTime), AirValue, WaterValue, 0, 100);
+    return _waterLevel;
 }
 
 /**
@@ -42,7 +43,8 @@ int CapacitiveWaterLevel::read()
  */
 int CapacitiveWaterLevel::read(int samples)
 {
-    return map(readRaw(samples, _delayTime), AirValue, WaterValue, 0, 100);
+    _waterLevel = map(readRaw(samples, _delayTime), AirValue, WaterValue, 0, 100);
+    return _waterLevel;
 }
 
 void CapacitiveWaterLevel::setDelayTime(int delayTime)
