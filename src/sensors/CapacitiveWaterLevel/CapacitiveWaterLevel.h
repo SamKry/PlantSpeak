@@ -12,6 +12,7 @@ public:
     void begin();
     int read();
     int read(int samples);
+    int getWaterLevel() { return _waterLevel;}
     void setDelayTime(int delayTime);
     int getDelayTime();
     void setAirValue(int AirValue);
@@ -23,6 +24,7 @@ public:
 private:
     int _signalPin;
     int _delayTime = 10;
+    int _waterLevel;
     int AirValue;
     int WaterValue;
     int readRaw(int samples, int delayTime);

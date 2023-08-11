@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include <sensors/Voltage.h>
+#include <sensors/Voltage/Voltage.h>
 
 /**
  * @brief Construct a new Voltage:: Voltage object
@@ -46,7 +46,8 @@ float Voltage::read(int samples)
         delay(delayTime);
     }
     int voltageRAW = sum / samples;
-    return (voltageRAW * referenceVoltage / resolution) * voltageDivider;
+    _voltage = (voltageRAW * referenceVoltage / resolution) * voltageDivider;
+    return _voltage;
 }
 
 // private

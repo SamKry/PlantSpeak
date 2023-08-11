@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <sensors/CapacitiveWaterLevel.h>
+#include <sensors/CapacitiveWaterLevel/CapacitiveWaterLevel.h>
 
 /**
  * @brief Construct a new Capacitive Water Level:: Capacitive Water Level object

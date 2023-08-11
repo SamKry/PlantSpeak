@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include <cloud/ThingSpeakHandler.h>
+#include <cloud/ThingSpeakHandler/ThingSpeakHandler.h>
 #include <ThingSpeak.h>
 
 WiFiClient client;

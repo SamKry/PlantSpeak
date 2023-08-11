@@ -1,4 +1,4 @@
-#include "WifiHandler.h"
+#include "cloud/WifiHandler/WifiHandler.h"
 
 /**
  * @brief Connects to WiFi with the given ssid and password and waits for the connection to be established.
@@ -9,7 +9,7 @@
  * 
  * @return int  The time it took to connect to WiFi in milliseconds.
  */
-int WifiHandler::connect(const char *ssid, const char *password, int timeout)
+int WifiHandler::connect(const char *ssid, const char *password)
 {
     long startTime = millis();
     WiFi.mode(WIFI_STA);
@@ -20,7 +20,7 @@ int WifiHandler::connect(const char *ssid, const char *password, int timeout)
         Serial.print("Attempting to connect to SSID: ");
         Serial.print(ssid);
         WiFi.begin(ssid, password);
-        while (WiFi.status() != WL_CONNECTED && millis() - startTime < timeout * 1000)
+        while (WiFi.status() != WL_CONNECTED && millis() - startTime < _connectionTimeout * 1000)
         {
             Serial.print(".");
             delay(500);

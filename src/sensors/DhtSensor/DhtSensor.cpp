@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Adafruit_Sensor.h>
-#include <sensors/DhtSensor.h>
+#include <sensors/DhtSensor/DhtSensor.h>
 
 /**
  * @brief Construct a new Dht Sensor:: Dht Sensor object
