@@ -9,8 +9,9 @@
 #include "sensors/Voltage/Voltage.h"
 
 const int NUMBER_OF_READINGS = 10;       // the number of readings to take from each sensor.
+const int MAX_RETRIES = 5;               // the number of retries to send data to ThingSpeak.
 const int WIFI_CONNECTION_TIMEOUT = 20;  // the time to wait for a WiFi connection (in seconds)
-int deepSleepTime = 120;               // the time to sleep between readings. (in seconds)
+int deepSleepTime = 120;                 // the time to sleep between readings. (in seconds)
 
 Led led(16);  // internal LED
 
@@ -64,18 +65,18 @@ bool sendDataToThingSpeak(int maxRetries) {
 
 /**
  * @brief Calculates the sleep time based on the battery voltage.
- * 
+ *
  * The sleep time is calculated using the following formula:
  * f(x)=((((1)/(1+ℯ^(-(4.7 (x-3.3))))))^(25.6) (-19)+20)*60
- * 
+ *
  * The formula is based on the following graph: https://www.geogebra.org/calculator/sehbwmcd
- * 
+ *
  * @param batteryVoltage The battery voltage.
  * @return float The sleep time in seconds. NOTE: Must be converted to microseconds before passing it to esp_sleep_enable_timer_wakeup().
  */
 float calcSleepTime(float batteryVoltage) {
   double e = 2.71828;
-  return (pow((1.0 / (1.0 + pow(e, -(4.7 * (batteryVoltage - 3.3))))), 25.6) * (-19) + 20) * 60; 
+  return (pow((1.0 / (1.0 + pow(e, -(4.7 * (batteryVoltage - 3.3))))), 25.6) * (-19) + 20) * 60;
 }
 
 void setup() {
@@ -92,16 +93,14 @@ void setup() {
   wifiHandler.setConnectionTimeout(WIFI_CONNECTION_TIMEOUT);
   currentWifiConnectionTime = wifiHandler.connect(SECRET_SSID, SECRET_PASS) / 1000.0;
   led.turnOn();
-}
 
-void loop() {
   if (wifiHandler.isConnected()) {
     led.turnOff();
 
     readSensors();
     deepSleepTime = calcSleepTime(voltage.getVoltage());
 
-    sendDataToThingSpeak(NUMBER_OF_READINGS);
+    sendDataToThingSpeak(MAX_RETRIES);
   } else {
     led.blinkError();
     Serial.println("Not connected to WiFi");
@@ -113,3 +112,5 @@ void loop() {
   esp_sleep_enable_timer_wakeup(deepSleepTime * 1000000);
   esp_deep_sleep_start();
 }
+
+void loop() {}
