@@ -8,10 +8,10 @@
 #include "sensors/DhtSensor/DhtSensor.h"
 #include "sensors/Voltage/Voltage.h"
 
-const int NUMBER_OF_READINGS = 10;       // the number of readings to take from each sensor.
-const int MAX_RETRIES = 5;               // the number of retries to send data to ThingSpeak.
-const int WIFI_CONNECTION_TIMEOUT = 20;  // the time to wait for a WiFi connection (in seconds)
-int deepSleepTime = 120;                 // the time to sleep between readings. (in seconds)
+const int NUMBER_OF_READINGS = 10;  // the number of readings to take from each sensor.
+const int MAX_RETRIES = 5;          // the number of retries to send data to ThingSpeak.
+int deepSleepTime = 120;            // is calculated based on the battery voltage, see calculateSleepTime() for more info
+String hostname = "ESP32-PlantSpeak-1";   // the hostname of the device, used for OTA updates and WiFi connection
 
 Led led(16);  // internal LED
 
@@ -23,6 +23,7 @@ WifiHandler wifiHandler;
 ThingSpeakHandler thingSpeakHandler(SECRET_CH_ID, SECRET_WRITE_API_KEY);  // deined in src/secrets.h
 RTC_DATA_ATTR int bootCount;                                              // track boot count
 double currentWifiConnectionTime = 0;
+const int WIFI_CONNECTION_TIMEOUT = 20;  // the time to wait for a WiFi connection (in seconds)
 
 void setFields() {
   thingSpeakHandler.setField(1, String(waterLevel.getWaterLevel()));
@@ -91,6 +92,7 @@ void setup() {
 
   led.turnOff();
   wifiHandler.setConnectionTimeout(WIFI_CONNECTION_TIMEOUT);
+  wifiHandler.setHostname(hostname);
   currentWifiConnectionTime = wifiHandler.connect(SECRET_SSID, SECRET_PASS) / 1000.0;
   led.turnOn();
 

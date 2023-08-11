@@ -13,7 +13,8 @@ int WifiHandler::connect(const char *ssid, const char *password)
 {
     long startTime = millis();
     WiFi.mode(WIFI_STA);
-
+    WiFi.setHostname(_hostname.c_str());
+    
     // Connect or reconnect to WiFi
     if (WiFi.status() != WL_CONNECTED)
     {
