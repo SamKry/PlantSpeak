@@ -68,7 +68,7 @@ bool sendDataToThingSpeak(int maxRetries) {
  * @brief Calculates the sleep time based on the battery voltage.
  *
  * The sleep time is calculated using the following formula:
- * f(x)=((((1)/(1+ℯ^(-(4.7 (x-3.3))))))^(25.6) (-19)+20)*60
+ * f(x)=((((1)/(1+ℯ^(-(4.7 (x-3.3))))))^(25.6) (-59)+60)*60
  *
  * The formula is based on the following graph: https://www.geogebra.org/calculator/sehbwmcd
  *
@@ -77,7 +77,7 @@ bool sendDataToThingSpeak(int maxRetries) {
  */
 float calcSleepTime(float batteryVoltage) {
   double e = 2.71828;
-  return (pow((1.0 / (1.0 + pow(e, -(4.7 * (batteryVoltage - 3.3))))), 25.6) * (-19) + 20) * 60;
+  return (pow((1.0 / (1.0 + pow(e, -(4.7 * (batteryVoltage - 3.3))))), 25.6) * (-59) + 60) * 60;
 }
 
 void setup() {
