@@ -10,7 +10,7 @@
 
 const int NUMBER_OF_READINGS = 10;  // the number of readings to take from each sensor.
 const int MAX_RETRIES = 5;          // the number of retries to send data to ThingSpeak.
-int deepSleepTime = 120;            // is calculated based on the battery voltage, see calculateSleepTime() for more info
+int deepSleepTime = 3600;            // is calculated based on the battery voltage, see calculateSleepTime() for more info
 String hostname = "ESP32-PlantSpeak-1";   // the hostname of the device, used for OTA updates and WiFi connection
 
 Led led(16);  // internal LED
@@ -47,7 +47,7 @@ bool sendDataToThingSpeak(int maxRetries) {
 
   while (postResponse != 200 && retries < maxRetries) {
     setFields();
-    thingSpeakHandler.setStatus("Boot Count: " + String(bootCount) + ", Number of retries: " + String(retries) + ", WiFi connection time: " + String(currentWifiConnectionTime) + "s, Sleep time: " + String(deepSleepTime) + "s");
+    thingSpeakHandler.setStatus("Boot Count: " + String(bootCount) + ", Number of retries: " + String(retries) + ", WiFi connection time: " + String(currentWifiConnectionTime) + "s, Sleep time: " + String(deepSleepTime) + "s (" + String(deepSleepTime / 60) + "min)");
     postResponse = thingSpeakHandler.post();
     Serial.println("Post response: " + String(postResponse));
 
@@ -81,6 +81,16 @@ float calcSleepTime(float batteryVoltage) {
 }
 
 void setup() {
+  // check if voltage is below 4V
+  if (voltage.getVoltage() < 4) {
+    led.blinkError();
+    Serial.println("Battery voltage is below 4V, going to sleep for 1 hour");
+    gpio_deep_sleep_hold_en();
+    esp_sleep_enable_timer_wakeup(3600 * 1000000);
+    esp_deep_sleep_start();
+    return;
+  }
+
   bootCount++;
   Serial.begin(9600);
 
