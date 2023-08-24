@@ -8,10 +8,12 @@
 #include "sensors/DhtSensor/DhtSensor.h"
 #include "sensors/Voltage/Voltage.h"
 
-const int NUMBER_OF_READINGS = 10;  // the number of readings to take from each sensor.
-const int MAX_RETRIES = 5;          // the number of retries to send data to ThingSpeak.
-int deepSleepTime = 120;            // is calculated based on the battery voltage, see calculateSleepTime() for more info
-String hostname = "ESP32-PlantSpeak-1";   // the hostname of the device, used for OTA updates and WiFi connection
+const int NUMBER_OF_READINGS = 10;       // the number of readings to take from each sensor.
+const int MAX_RETRIES = 5;               // the number of retries to send data to ThingSpeak.
+String hostname = "ESP32-PlantSpeak-1";  // the hostname of the device, used for OTA updates and WiFi connection
+
+long deepSleepTime = 3600L;  // the time to sleep in microsecondsis calculated based on the battery voltage, see
+                                   // calculateSleepTime() for more info
 
 Led led(16);  // internal LED
 
@@ -34,6 +36,11 @@ void setFields() {
   /* add more fields here if needed */
 }
 
+String getStatus() {
+  return "Boot Count: " + String(bootCount) + ", WiFi connection time: " + String(currentWifiConnectionTime) +
+         "s, Sleep time: " + String(deepSleepTime) + "s (" + String((deepSleepTime) / 60) + "min)";
+}
+
 void readSensors() {
   dhtSensor.read(NUMBER_OF_READINGS);
   voltage.read(NUMBER_OF_READINGS);
@@ -47,7 +54,8 @@ bool sendDataToThingSpeak(int maxRetries) {
 
   while (postResponse != 200 && retries < maxRetries) {
     setFields();
-    thingSpeakHandler.setStatus("Boot Count: " + String(bootCount) + ", Number of retries: " + String(retries) + ", WiFi connection time: " + String(currentWifiConnectionTime) + "s, Sleep time: " + String(deepSleepTime) + "s");
+    thingSpeakHandler.setStatus("Number of retries: " + String(retries) + " - " + getStatus());
+
     postResponse = thingSpeakHandler.post();
     Serial.println("Post response: " + String(postResponse));
 
@@ -73,45 +81,53 @@ bool sendDataToThingSpeak(int maxRetries) {
  * The formula is based on the following graph: https://www.geogebra.org/calculator/sehbwmcd
  *
  * @param batteryVoltage The battery voltage.
- * @return float The sleep time in seconds. NOTE: Must be converted to microseconds before passing it to esp_sleep_enable_timer_wakeup().
+ * @return uint64_t The sleep time in seconds. NOTE: Must be converted to microseconds before passing it to
+ * esp_sleep_enable_timer_wakeup().
  */
-float calcSleepTime(float batteryVoltage) {
+long calcSleepTime(float batteryVoltage) {
   double e = 2.71828;
-  return (pow((1.0 / (1.0 + pow(e, -(4.7 * (batteryVoltage - 3.3))))), 25.6) * (-59) + 60) * 60;
+  return (long)(pow((1.0 / (1.0 + pow(e, -(4.7 * (batteryVoltage - 3.3))))), 25.6) * (-59L) + 60L) * 60L;
 }
 
 void setup() {
-  bootCount++;
+  // check if voltage is below 4V
   Serial.begin(9600);
+  bootCount++;
 
-  btStop();
-
-  waterLevel.begin();
-  dhtSensor.begin();
-  voltage.begin();
-
-  led.turnOff();
-  wifiHandler.setConnectionTimeout(WIFI_CONNECTION_TIMEOUT);
-  wifiHandler.setHostname(hostname);
-  currentWifiConnectionTime = wifiHandler.connect(SECRET_SSID, SECRET_PASS) / 1000.0;
-  led.turnOn();
-
-  if (wifiHandler.isConnected()) {
-    led.turnOff();
-
-    readSensors();
-    deepSleepTime = calcSleepTime(voltage.getVoltage());
-
-    sendDataToThingSpeak(MAX_RETRIES);
-  } else {
+  if (voltage.read(NUMBER_OF_READINGS) < 4.0) {
     led.blinkError();
-    Serial.println("Not connected to WiFi");
-  }
-  led.turnOff();
+    deepSleepTime = 3600L;
+    Serial.println("Battery voltage is below 4V");
+  } else {
+    btStop();
 
-  Serial.println("Going to sleep for " + String(deepSleepTime) + " seconds");
+    waterLevel.begin();
+    dhtSensor.begin();
+    voltage.begin();
+
+    led.turnOff();
+    wifiHandler.setConnectionTimeout(WIFI_CONNECTION_TIMEOUT);
+    wifiHandler.setHostname(hostname);
+    currentWifiConnectionTime = wifiHandler.connect(SECRET_SSID, SECRET_PASS) / 1000.0;
+    led.turnOn();
+
+    if (wifiHandler.isConnected()) {
+      led.turnOff();
+
+      readSensors();
+      deepSleepTime = calcSleepTime(voltage.getVoltage());
+
+      sendDataToThingSpeak(MAX_RETRIES);
+    } else {
+      led.blinkError();
+      Serial.println("Not connected to WiFi");
+    }
+    led.turnOff();
+  }
+
+  Serial.println(getStatus());
   gpio_deep_sleep_hold_en();
-  esp_sleep_enable_timer_wakeup(deepSleepTime * 1000000);
+  esp_sleep_enable_timer_wakeup(deepSleepTime * 1000000ULL);
   esp_deep_sleep_start();
 }
 
