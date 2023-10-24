@@ -1,3 +1,5 @@
+# ⚠️ Currently under development
+
 # PlantSpeak
 
 PlantSpeak is an IoT project that publishes sensor data from an "ESP-32 Soil Moisture Sensor Module" to ThingSpeak. It collects data related to soil humidity, air temperature, air humidity, voltage, and RSSI, and sends it to ThingSpeak for further analysis and visualization.
