@@ -104,3 +104,7 @@ Contributions to PlantSpeak are welcome! If you have any ideas, improvements, or
 ## License
 
 [MIT License](https://opensource.org/licenses/MIT)
+
+
+<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1270350/widgets/685641"></iframe>
+
